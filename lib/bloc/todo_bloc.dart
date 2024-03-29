@@ -32,9 +32,33 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
     on<EditTodo>((event, emit) {
       final updatedTodos = state.todos.map((todo) {
         // Check if the todo is the one being edited
-        if (todo.name == event.todo.name) {
-          return event.todo.copyWith(name: event.todo.name);
+        if (todo == event.todo) {
+          // If it is, return a new todo with the updated name
+          // return event.todo.copyWith(name: event.newName);
+
+          // If it is, return a new todo with the updated name and createdAt
+          return (Todo(
+            name: event.newName,
+            createdAt: event.newCreatedAt,
+          ));
         } else {
+          // Otherwise, return the original todo
+          return todo;
+        }
+      }).toList();
+      emit(TodoState(updatedTodos));
+      Logger().i('Edited Todo - $updatedTodos');
+    });
+
+    // Toggle todo completion
+    on<ToggleTodoCompletion>((event, emit) {
+      final updatedTodos = state.todos.map((todo) {
+        // Check if the todo is the one being toggled
+        if (todo == event.todo) {
+          // If it is, return a new todo with the updated completion status
+          return todo.copyWith(isCompleted: event.isCompleted);
+        } else {
+          // Otherwise, return the original todo
           return todo;
         }
       }).toList();

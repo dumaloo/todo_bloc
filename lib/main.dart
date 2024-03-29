@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => TodoBloc(),
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Todo App',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

@@ -58,8 +58,9 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                   }
                   if (widget.isUpdating) {
                     BlocProvider.of<TodoBloc>(context).add(EditTodo(
-                      todo:
-                          widget.todo!.copyWith(name: todoTitleController.text),
+                      todo: widget.todo!, // Pass the original todo
+                      newName: todoTitleController.text, // Provide the new name
+                      newCreatedAt: DateTime.now(), // Update the created date
                     ));
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(

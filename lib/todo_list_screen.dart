@@ -9,7 +9,7 @@ class TodoListScreen extends StatelessWidget {
   const TodoListScreen({super.key});
 
   String _formatDate(DateTime date) {
-    return '${date.day}/${date.month}/${date.year}';
+    return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}';
   }
 
   @override
@@ -57,20 +57,65 @@ class TodoListScreen extends StatelessWidget {
                   );
                 },
                 child: ListTile(
-                  title: Text(todo.name),
-                  subtitle: Text('Created at: ${_formatDate(todo.createdAt)}'),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              AddTodoScreen(todo: todo, isUpdating: true),
+                  onTap: todo.isCompleted
+                      ? () {} // Do nothing if the todo is completed
+                      : () {
+                          // Edit the todo
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddTodoScreen(
+                                todo: todo,
+                                isUpdating: true,
+                              ),
+                            ),
+                          );
+                        },
+                  leading: Checkbox(
+                    value: todo.isCompleted,
+                    onChanged: (value) {
+                      // Toggle completion status of the todo
+                      BlocProvider.of<TodoBloc>(context).add(
+                        ToggleTodoCompletion(todo: todo, isCompleted: value!),
+                      );
+
+                      // Show a snackbar
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            '${todo.name} ${value ? 'completed' : 'incomplete'}',
+                          ),
+                          action: SnackBarAction(
+                            // UNDO button
+                            label: 'UNDO',
+                            onPressed: () {
+                              BlocProvider.of<TodoBloc>(context).add(
+                                ToggleTodoCompletion(
+                                    todo: todo, isCompleted: value),
+                              );
+                            },
+                          ),
                         ),
                       );
                     },
                   ),
+                  title: Text(
+                    todo.name,
+                    style: TextStyle(
+                      color: todo.isCompleted ? Colors.grey : Colors.black,
+                      decoration:
+                          todo.isCompleted ? TextDecoration.lineThrough : null,
+                    ),
+                  ),
+                  subtitle: Text(
+                    'Created at: ${_formatDate(todo.createdAt)}',
+                    style: TextStyle(
+                      color: todo.isCompleted ? Colors.grey : Colors.black,
+                      decoration:
+                          todo.isCompleted ? TextDecoration.lineThrough : null,
+                    ),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios),
                 ),
               );
             },

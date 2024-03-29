@@ -12,9 +12,13 @@ class AddTodo extends TodoEvent {
 
 class EditTodo extends TodoEvent {
   final Todo todo;
+  final String newName;
+  final DateTime newCreatedAt;
 
   EditTodo({
     required this.todo,
+    required this.newName,
+    required this.newCreatedAt,
   });
 }
 
@@ -24,4 +28,10 @@ class DeleteTodo extends TodoEvent {
   DeleteTodo({
     required this.todo,
   });
+}
+
+class ToggleTodoCompletion extends TodoEvent {
+  final Todo todo;
+  final bool isCompleted;
+  ToggleTodoCompletion({required this.todo, required this.isCompleted});
 }
