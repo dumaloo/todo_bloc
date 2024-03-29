@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_bloc/add_todo_screen.dart';
 import 'package:todo_bloc/bloc/todo_bloc.dart';
+import 'package:todo_bloc/models/todo_model.dart';
 import 'package:todo_bloc/todo_list_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Hive.initFlutter();
+  Hive.registerAdapter(TodoAdapter());
+  await Hive.openBox<Todo>('todos');
   runApp(const MyApp());
 }
 

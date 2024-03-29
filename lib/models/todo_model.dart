@@ -1,6 +1,16 @@
+import 'package:hive/hive.dart';
+
+part 'todo_model.g.dart';
+
+@HiveType(typeId: 0)
 class Todo {
+  @HiveField(0)
   final String name;
+
+  @HiveField(1)
   final DateTime createdAt;
+
+  @HiveField(2)
   bool isCompleted;
 
   Todo({
