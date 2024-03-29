@@ -58,7 +58,7 @@ class TodoListScreen extends StatelessWidget {
                 },
                 child: ListTile(
                   onTap: todo.isCompleted
-                      ? () {} // Do nothing if the todo is completed
+                      ? null // Do nothing if the todo is completed
                       : () {
                           // Edit the todo
                           Navigator.push(
@@ -85,16 +85,7 @@ class TodoListScreen extends StatelessWidget {
                           content: Text(
                             '${todo.name} ${value ? 'completed' : 'incomplete'}',
                           ),
-                          action: SnackBarAction(
-                            // UNDO button
-                            label: 'UNDO',
-                            onPressed: () {
-                              BlocProvider.of<TodoBloc>(context).add(
-                                ToggleTodoCompletion(
-                                    todo: todo, isCompleted: value),
-                              );
-                            },
-                          ),
+                          backgroundColor: value ? Colors.green : Colors.red,
                         ),
                       );
                     },
