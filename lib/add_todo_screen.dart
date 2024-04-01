@@ -7,7 +7,8 @@ import 'package:todo_bloc/models/todo_model.dart';
 class AddTodoScreen extends StatefulWidget {
   final Todo? todo;
   final bool isUpdating;
-  const AddTodoScreen({super.key, this.todo, this.isUpdating = false});
+  // ignore: use_key_in_widget_constructors
+  const AddTodoScreen({this.todo, this.isUpdating = false});
 
   @override
   State<AddTodoScreen> createState() => _AddTodoScreenState();
@@ -32,7 +33,8 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(
+                    top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
                 child: TextField(
                   controller: todoTitleController,
                   decoration: const InputDecoration(
@@ -41,6 +43,7 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     contentPadding: EdgeInsets.all(16),
                     labelText: 'Title',
                   ),
+                  autofocus: true,
                 ),
               ),
               const SizedBox(height: 16),

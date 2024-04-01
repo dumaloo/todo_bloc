@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todo_bloc/add_todo_screen.dart';
 import 'package:todo_bloc/bloc/todo_bloc.dart';
+import 'package:todo_bloc/models/todo_model.dart';
 import 'package:todo_bloc/todo_list_screen.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(TodoAdapter()); // Register Hive adapter
+  await Hive.openBox<Todo>('todolist'); // Open Hive box for todos
   runApp(const MyApp());
 }
 
@@ -18,10 +23,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Todo App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
+        theme: ThemeData.dark(),
         initialRoute: '/',
         routes: {
           '/': (context) => const TodoListScreen(),

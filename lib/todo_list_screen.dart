@@ -5,8 +5,20 @@ import 'package:todo_bloc/bloc/todo_bloc.dart';
 import 'package:todo_bloc/bloc/todo_event.dart';
 import 'package:todo_bloc/bloc/todo_state.dart';
 
-class TodoListScreen extends StatelessWidget {
-  const TodoListScreen({super.key});
+class TodoListScreen extends StatefulWidget {
+  // ignore: use_key_in_widget_constructors
+  const TodoListScreen({Key? key});
+
+  @override
+  State<TodoListScreen> createState() => _TodoListScreenState();
+}
+
+class _TodoListScreenState extends State<TodoListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<TodoBloc>(context).add(LoadTodos());
+  }
 
   String _formatDate(DateTime date) {
     return '${date.day}/${date.month}/${date.year} ${date.hour}:${date.minute}';
@@ -17,6 +29,7 @@ class TodoListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Todo List'),
+        centerTitle: true,
       ),
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
@@ -25,9 +38,9 @@ class TodoListScreen extends StatelessWidget {
             itemBuilder: (context, index) {
               final todo = state.todos[index];
               return Dismissible(
-                key: Key(todo.name), // Unique key for each Dismissible
+                key: Key(todo.id.toString()), // Use todo's id as key
                 background: Container(
-                  color: Colors.red, // Background color when swiping
+                  color: Colors.red,
                   alignment: Alignment.centerRight,
                   padding: const EdgeInsets.only(right: 20.0),
                   child: const Icon(
@@ -36,21 +49,16 @@ class TodoListScreen extends StatelessWidget {
                   ),
                 ),
                 onDismissed: (direction) {
-                  // Delete the todo
                   BlocProvider.of<TodoBloc>(context)
                       .add(DeleteTodo(todo: todo));
-
-                  // Show a snackbar
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text('${todo.name} deleted'),
                       action: SnackBarAction(
-                        // UNDO button
                         label: 'UNDO',
                         onPressed: () {
-                          BlocProvider.of<TodoBloc>(context).add(
-                            AddTodo(name: todo.name),
-                          );
+                          BlocProvider.of<TodoBloc>(context)
+                              .add(AddTodo(name: todo.name));
                         },
                       ),
                     ),
@@ -58,9 +66,8 @@ class TodoListScreen extends StatelessWidget {
                 },
                 child: ListTile(
                   onTap: todo.isCompleted
-                      ? null // Do nothing if the todo is completed
+                      ? null
                       : () {
-                          // Edit the todo
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -74,12 +81,9 @@ class TodoListScreen extends StatelessWidget {
                   leading: Checkbox(
                     value: todo.isCompleted,
                     onChanged: (value) {
-                      // Toggle completion status of the todo
                       BlocProvider.of<TodoBloc>(context).add(
                         ToggleTodoCompletion(todo: todo, isCompleted: value!),
                       );
-
-                      // Show a snackbar
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
@@ -93,7 +97,7 @@ class TodoListScreen extends StatelessWidget {
                   title: Text(
                     todo.name,
                     style: TextStyle(
-                      color: todo.isCompleted ? Colors.grey : Colors.black,
+                      color: todo.isCompleted ? Colors.grey : Colors.white,
                       decoration:
                           todo.isCompleted ? TextDecoration.lineThrough : null,
                     ),
@@ -101,7 +105,7 @@ class TodoListScreen extends StatelessWidget {
                   subtitle: Text(
                     'Created at: ${_formatDate(todo.createdAt)}',
                     style: TextStyle(
-                      color: todo.isCompleted ? Colors.grey : Colors.black,
+                      color: todo.isCompleted ? Colors.grey : Colors.white,
                       decoration:
                           todo.isCompleted ? TextDecoration.lineThrough : null,
                     ),

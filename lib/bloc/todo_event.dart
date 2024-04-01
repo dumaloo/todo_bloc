@@ -35,3 +35,8 @@ class ToggleTodoCompletion extends TodoEvent {
   final bool isCompleted;
   ToggleTodoCompletion({required this.todo, required this.isCompleted});
 }
+
+class LoadTodos extends TodoEvent {
+  @override
+  String toString() => 'LoadTodos';
+}
