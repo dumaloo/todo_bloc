@@ -8,6 +8,11 @@ class AddTodo extends TodoEvent {
   AddTodo({
     required this.name,
   });
+
+  @override
+  String toString() {
+    return 'AddTodo { name: $name }';
+  }
 }
 
 class EditTodo extends TodoEvent {
@@ -20,6 +25,11 @@ class EditTodo extends TodoEvent {
     required this.newName,
     required this.newCreatedAt,
   });
+
+  @override
+  String toString() {
+    return 'EditTodo { todo: $todo, newName: $newName, newCreatedAt: $newCreatedAt }';
+  }
 }
 
 class DeleteTodo extends TodoEvent {
@@ -28,12 +38,22 @@ class DeleteTodo extends TodoEvent {
   DeleteTodo({
     required this.todo,
   });
+
+  @override
+  String toString() {
+    return 'DeleteTodo { todo: $todo }';
+  }
 }
 
 class ToggleTodoCompletion extends TodoEvent {
   final Todo todo;
   final bool isCompleted;
   ToggleTodoCompletion({required this.todo, required this.isCompleted});
+
+  @override
+  String toString() {
+    return 'ToggleTodoCompletion { todo: $todo, isCompleted: $isCompleted }';
+  }
 }
 
 class LoadTodos extends TodoEvent {

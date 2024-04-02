@@ -7,6 +7,6 @@ class TodoState {
 
   @override
   String toString() {
-    return '${todos.map((todo) => todo.toString()).toList()} }';
+    return '${todos.map((todo) => todo.toString()).toList()}';
   }
 }

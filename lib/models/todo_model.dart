@@ -35,9 +35,6 @@ class Todo extends HiveObject {
 
   @override
   String toString() {
-    return 'Todo:\n'
-        '  id: $id\n'
-        '  name: $name\n'
-        '  createdAt: $createdAt';
+    return 'Todo { id: $id, name: $name, createdAt: $createdAt, isCompleted: $isCompleted }';
   }
 }

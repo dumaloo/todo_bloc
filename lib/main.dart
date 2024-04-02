@@ -7,6 +7,7 @@ import 'package:todo_bloc/models/todo_model.dart';
 import 'package:todo_bloc/todo_list_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(TodoAdapter()); // Register Hive adapter
   await Hive.openBox<Todo>('todolist'); // Open Hive box for todos
